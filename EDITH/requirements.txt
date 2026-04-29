@@ -1,0 +1,28 @@
+# Core
+python-dotenv>=1.0.1
+requests>=2.32.3
+psutil>=6.0.0
+
+# LLM
+groq>=0.11.0
+
+# Search
+duckduckgo-search>=6.2.13
+
+# TTS / desktop automation
+pyttsx3>=2.90
+pyautogui>=0.9.54
+SpeechRecognition>=3.10.4
+PyAudio>=0.2.14
+
+# GUI
+PyQt6>=6.7.1
+
+# Google Gmail integration
+google-auth>=2.35.0
+google-auth-oauthlib>=1.2.1
+google-api-python-client>=2.149.0
+google-auth-httplib2>=0.2.0
+
+# Optional Outlook auth helper (currently using raw requests device code flow)
+msal>=1.31.0
