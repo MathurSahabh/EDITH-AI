@@ -291,7 +291,7 @@ class SystemControl:
                 subprocess.run(["osascript", "-e", expr], check=True, timeout=5)
                 return f"Volume {direction}."
             if sys.startswith("linux"):
-                arg = f"{abs(delta)}%{'+'  if delta > 0 else '-'}"
+                arg = f"{abs(delta)}%{'+' if delta > 0 else '-'}"
                 subprocess.run(
                     ["amixer", "-q", "sset", "Master", arg],
                     check=True, timeout=5,
@@ -372,7 +372,7 @@ class SystemControl:
         direction = "increased" if delta > 0 else "decreased"
         try:
             if self._sys.startswith("linux"):
-                arg = f"{abs(delta)}%{'+'  if delta > 0 else '-'}"
+                arg = f"{abs(delta)}%{'+' if delta > 0 else '-'}"
                 subprocess.run(["brightnessctl", "set", arg], check=True, timeout=10)
                 return f"Brightness {direction}."
         except Exception:
@@ -469,7 +469,7 @@ class SystemControl:
                 return f"Mouse speed set to {speed}." if r.returncode == 0 else "Mouse speed change failed."
 
             if sys.startswith("linux"):
-                # xinput accel range is -1 to 1; map 1-20 to -0.9 to 0.9
+                # xinput accel range is -1 to 1; map speed 1-20 → approx -0.95 to +0.95
                 accel = round((speed - 10.5) / 10, 2)
                 r = subprocess.run(
                     ["xinput", "--set-prop", "Virtual core pointer",
@@ -575,7 +575,9 @@ class SystemControl:
                 return f"Notifications turned {action}." if r.returncode == 0 else "Notification change failed."
 
             if sys == "darwin":
-                bool_val = "true" if not enable else "false"  # true = DND on = notifications off
+                # doNotDisturb=true means DND on (notifications suppressed)
+                # doNotDisturb=false means DND off (notifications enabled)
+                bool_val = "false" if enable else "true"
                 r = subprocess.run(
                     ["defaults", "-currentHost", "write",
                      "com.apple.notificationcenterui", "doNotDisturb",
@@ -633,13 +635,25 @@ class SystemControl:
 
     def _kill_process(self, name: str) -> str:
         killed = []
+        # First pass: exact name match (case-insensitive)
         for proc in psutil.process_iter(["pid", "name"]):
             try:
-                if name.lower() in (proc.info["name"] or "").lower():
+                if name.lower() == (proc.info["name"] or "").lower():
                     proc.terminate()
                     killed.append(f"{proc.info['name']} (PID {proc.info['pid']})")
             except (psutil.NoSuchProcess, psutil.AccessDenied):
                 continue
+
+        # Second pass: substring match only if no exact match found
+        if not killed:
+            for proc in psutil.process_iter(["pid", "name"]):
+                try:
+                    if name.lower() in (proc.info["name"] or "").lower():
+                        proc.terminate()
+                        killed.append(f"{proc.info['name']} (PID {proc.info['pid']})")
+                except (psutil.NoSuchProcess, psutil.AccessDenied):
+                    continue
+
         if killed:
             return f"Terminated: {', '.join(killed)}"
         return f"No process matching '{name}' found."

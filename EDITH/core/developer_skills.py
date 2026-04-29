@@ -63,7 +63,7 @@ class DeveloperSkills:
 
         m = re.match(r"^run (python3?|node|bash|sh|java|go|ruby|perl)\s+(.+)$", low)
         if m:
-            lang = m.group(1).rstrip("3")  # normalise python3 → python
+            lang = "python" if m.group(1) == "python3" else m.group(1)
             code_or_file = raw[len(m.group(0)) - len(m.group(2)):].strip()
             return self._run_with_lang(lang, code_or_file)
 
@@ -204,8 +204,8 @@ class DeveloperSkills:
             if lang:
                 return self._run_with_lang(lang, str(path))
             return f"Unknown file type '{ext}'. Supported: .py .js .sh .rb .go .java"
-        # Treat as a Python one-liner
-        return self._run_with_lang("python", f'-c "{file_or_snippet}"')
+        # Treat as a Python one-liner; pass snippet as a separate argument to avoid injection
+        return self._run_with_lang_snippet(file_or_snippet)
 
     def _run_with_lang(self, lang: str, code_or_file: str) -> str:
         lang = lang.lower()
@@ -236,6 +236,26 @@ class DeveloperSkills:
             )
         except FileNotFoundError:
             return f"'{base[0]}' interpreter not found. Please install it."
+        except subprocess.TimeoutExpired:
+            return "Code execution timed out (30 s limit)."
+        except Exception as e:
+            return f"Run failed: {e}"
+
+    def _run_with_lang_snippet(self, snippet: str) -> str:
+        """Run a Python one-liner safely by passing the snippet as a separate argument."""
+        try:
+            result = subprocess.run(
+                ["python3", "-c", snippet],
+                capture_output=True, text=True, timeout=30
+            )
+            output = (result.stdout + result.stderr).strip()
+            return (
+                f"Exit {result.returncode}:\n{output[:3000]}"
+                if output
+                else f"Exit {result.returncode}: (no output)"
+            )
+        except FileNotFoundError:
+            return "python3 interpreter not found. Please install Python."
         except subprocess.TimeoutExpired:
             return "Code execution timed out (30 s limit)."
         except Exception as e:
@@ -367,7 +387,7 @@ class DeveloperSkills:
 
     def _git_commit(self, raw: str) -> str:
         # Parse: "git commit <message>" or "git commit -m <message>"
-        m = re.match(r"^git commit(?:\s+-m)?\s+[\"']?(.+?)[\"']?\s*$", raw, re.IGNORECASE)
+        m = re.match(r"^git commit(?:\s+-m)?\s+[\"']?(.+)[\"']?\s*$", raw, re.IGNORECASE)
         msg = m.group(1).strip() if m else "Auto-commit by EDITH"
 
         add_out = self._git_run(["git", "add", "-A"])
