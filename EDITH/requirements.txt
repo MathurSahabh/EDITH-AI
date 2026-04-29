@@ -17,6 +17,7 @@ PyAudio>=0.2.14
 
 # GUI
 PyQt6>=6.7.1
+customtkinter>=5.2.2
 
 # Google Gmail integration
 google-auth>=2.35.0
