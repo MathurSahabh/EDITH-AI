@@ -17,6 +17,8 @@ import pygetwindow as gw
 
 from core.desktop_actions import DesktopActions
 from core.skills import AgentSkills
+from core.developer_skills import DeveloperSkills
+from core.system_control import SystemControl
 
 
 class CommandRouter:
@@ -30,6 +32,8 @@ class CommandRouter:
         self.config = config
         self.desktop = DesktopActions()
         self._skills = None
+        self._dev = DeveloperSkills(groq_client=groq_client, config=config)
+        self._sys_ctrl = SystemControl(config=config)
 
         self.city_tz = {
             "london": "Europe/London",
@@ -632,6 +636,20 @@ class CommandRouter:
             if isinstance(skill_res, str):
                 return skill_res
 
+        # ------------------------------------------------------------------
+        # Developer & Coding features
+        # ------------------------------------------------------------------
+        dev_res = await self._dev.handle(raw)
+        if dev_res is not None:
+            return dev_res
+
+        # ------------------------------------------------------------------
+        # System Control features
+        # ------------------------------------------------------------------
+        sys_res = self._sys_ctrl.handle(raw)
+        if sys_res is not None:
+            return sys_res
+
         return None
 
     async def execute_pending(self, pending_action, search):
@@ -675,6 +693,11 @@ class CommandRouter:
                 return f"Exit code: {result.returncode}\n{output[:3000]}"
             except Exception as e:
                 return f"Command failed: {e}"
+
+        if atype == "system_control":
+            action = pending_action.get("action", "")
+            target_val = pending_action.get("target", "")
+            return self._sys_ctrl.execute_pending(action, target_val)
 
         return "Unknown pending action."
 
@@ -859,6 +882,37 @@ class CommandRouter:
             "- send last draft\n"
             "- send email to <to> subject <sub> body <body> provider gmail|outlook\n"
             "- summarize meeting: <notes>\n"
-            "- daily brief"
+            "- daily brief\n"
+            "\n--- Developer & Coding ---\n"
+            "- write code for <task>  /  generate code for <task>\n"
+            "- open vscode  /  vscode link\n"
+            "- run code <file_or_snippet>\n"
+            "- run python|node|bash <file>\n"
+            "- fix bugs <file_or_code>  /  fix code <file>\n"
+            "- format code <file>\n"
+            "- explain code <file_or_code>\n"
+            "- git commit [message]\n"
+            "- git push  /  push to github\n"
+            "- git pull  /  pull from github\n"
+            "- git branch <name>  /  create branch <name>\n"
+            "- git status  /  git log  /  git diff\n"
+            "- docker <subcommand>\n"
+            "- aws <subcommand>\n"
+            "- linux <command>  /  terminal <command>  /  shell <command>\n"
+            "\n--- System Control ---\n"
+            "- system info  /  pc info\n"
+            "- shutdown  /  restart  /  sleep  (with confirmation)\n"
+            "- volume <0-100>  /  volume up/down  /  mute  /  unmute\n"
+            "- brightness <0-100>  /  brightness up/down\n"
+            "- virus scan  /  malware scan\n"
+            "- webcam on  /  webcam off\n"
+            "- mouse speed <1-20>\n"
+            "- keyboard lights <color>\n"
+            "- sync time  /  time sync\n"
+            "- show calendar  /  calendar view\n"
+            "- notifications on  /  notifications off  /  do not disturb\n"
+            "- task manager  /  list processes\n"
+            "- kill process <name>  /  close app <name>  (with confirmation)\n"
+            "- auto update  /  update pc\n"
         )
     
