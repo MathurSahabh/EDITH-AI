@@ -10,9 +10,12 @@ load_dotenv()
 
 @dataclass
 class Config:
-    # LLM
-    OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")
-    OPENAI_MODEL: str = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
+    # LLM (OpenRouter)
+    OPENROUTER_API_KEY: str = os.getenv("OPENROUTER_API_KEY", "")
+    OPENROUTER_MODEL: str = os.getenv("OPENROUTER_MODEL", "openai/gpt-4o-mini")
+    OPENROUTER_BASE_URL: str = os.getenv("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1")
+    OPENROUTER_SITE_URL: str = os.getenv("OPENROUTER_SITE_URL", "")
+    OPENROUTER_APP_NAME: str = os.getenv("OPENROUTER_APP_NAME", "")
 
     # Web
     BING_API_KEY: str = os.getenv("BING_API_KEY", "")
@@ -42,7 +45,7 @@ class Config:
         Path(self.GMAIL_TOKEN_PATH).parent.mkdir(parents=True, exist_ok=True)
         Path(self.OUTLOOK_TOKEN_PATH).parent.mkdir(parents=True, exist_ok=True)
 
-        if not self.OPENAI_API_KEY:
-            raise ValueError("Missing OPENAI_API_KEY in environment (.env).")
+        if not self.OPENROUTER_API_KEY:
+            raise ValueError("Missing OPENROUTER_API_KEY in environment (.env).")
 
         return True

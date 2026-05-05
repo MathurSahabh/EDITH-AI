@@ -4,12 +4,27 @@ import asyncio
 from openai import AsyncOpenAI
 
 
-class OpenAIClient:
+class OpenRouterClient:
     def __init__(self, config):
         self.config = config
-        self.client = AsyncOpenAI(api_key=config.OPENAI_API_KEY)
-        self.model = getattr(config, "OPENAI_MODEL", "gpt-4o-mini")
+        base_url = getattr(config, "OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1")
+        self.client = AsyncOpenAI(
+            api_key=config.OPENROUTER_API_KEY,
+            base_url=base_url,
+            default_headers=self._default_headers(),
+        )
+        self.model = getattr(config, "OPENROUTER_MODEL", "openai/gpt-4o-mini")
         self.timeout_sec = getattr(config, "REQUEST_TIMEOUT_SEC", 30)
+
+    def _default_headers(self):
+        headers = {}
+        site_url = getattr(self.config, "OPENROUTER_SITE_URL", "")
+        app_name = getattr(self.config, "OPENROUTER_APP_NAME", "")
+        if site_url:
+            headers["HTTP-Referer"] = site_url
+        if app_name:
+            headers["X-Title"] = app_name
+        return headers
 
     async def chat(self, prompt: str, system: Optional[str] = None) -> str:
         """

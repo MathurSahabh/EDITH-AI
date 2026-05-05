@@ -84,7 +84,7 @@ Then open `.env` in VS Code and fill in:
 
 ```env
 # REQUIRED
-OPENAI_API_KEY=sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+OPENROUTER_API_KEY=sk-or-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 # OPTIONAL — for weather commands
 OPENWEATHER_API_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -93,10 +93,10 @@ OPENWEATHER_API_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 BING_API_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
 
-**How to get an OpenAI API key:**
-1. Go to https://platform.openai.com/
+**How to get an OpenRouter API key:**
+1. Go to https://openrouter.ai/keys
 2. Sign up or log in
-3. Open **API keys** and create a new key
+3. Create a new API key
 4. Copy and paste into `.env`
 
 ---
@@ -242,7 +242,7 @@ EDITH-AI/
     │   ├── converter.py         ← ⭐ NEW: Unit converter
     │   └── password_gen.py      ← ⭐ NEW: Password generator
     ├── nlp/
-    │   ├── openai_client.py     ← OpenAI LLM wrapper
+    │   ├── openrouter_client.py ← OpenRouter LLM wrapper
     │   ├── stt.py               ← Speech-to-text
     │   └── tts.py               ← Text-to-speech
     ├── search/
@@ -265,7 +265,7 @@ EDITH-AI/
 | `ModuleNotFoundError: customtkinter` | `pip install customtkinter` |
 | `ModuleNotFoundError: pyperclip` | `pip install pyperclip` |
 | `PyAudio not found` | See Step 3 for platform-specific install |
-| `Missing OPENAI_API_KEY` | Add key to `.env` file |
+| `Missing OPENROUTER_API_KEY` | Add key to `.env` file |
 | GUI window doesn't open | Try CLI mode: `python main.py --cli` |
 | Voice commands not working | Check microphone permissions and PyAudio install |
 | Weather not working | Add `OPENWEATHER_API_KEY` to `.env` |

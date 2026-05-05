@@ -105,7 +105,7 @@ class EdithHudWindow(QMainWindow):
 
         cfg = SimpleNamespace(
             DB_PATH="edith.db",
-            OPENAI_API_KEY=os.getenv("OPENAI_API_KEY", ""),
+            OPENROUTER_API_KEY=os.getenv("OPENROUTER_API_KEY", ""),
             OPENWEATHER_API_KEY=os.getenv("OPENWEATHER_API_KEY", ""),
             BING_API_KEY=os.getenv("BING_API_KEY", ""),
             BING_ENDPOINT=os.getenv("BING_ENDPOINT", ""),

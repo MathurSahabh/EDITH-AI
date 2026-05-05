@@ -2,7 +2,7 @@
 
 **E**very **D**ay **I** **T**ackle **H**umankind — your personal AI assistant inspired by Iron Man's EDITH.
 
-EDITH is a Python-powered desktop AI that combines an OpenAI-backed LLM, live web search, email/calendar integrations, TTS/STT, and full desktop-automation skills into a single conversational interface.
+EDITH is a Python-powered desktop AI that combines an OpenRouter-backed LLM, live web search, email/calendar integrations, TTS/STT, and full desktop-automation skills into a single conversational interface.
 
 ---
 
@@ -10,7 +10,7 @@ EDITH is a Python-powered desktop AI that combines an OpenAI-backed LLM, live we
 
 | Category | Capabilities |
 |---|---|
-| **Conversation** | Context-aware chat via OpenAI with persistent memory |
+| **Conversation** | Context-aware chat via OpenRouter with persistent memory |
 | **Web Search** | Live DuckDuckGo + optional Bing results with freshness labels |
 | **Email** | Compose, draft, send via Gmail or Outlook (OAuth) |
 | **Calendar / Tasks** | Google Calendar & Tasks integration |
@@ -44,10 +44,10 @@ pip install -r requirements.txt
 
 ```bash
 cp .env.example .env
-# Open .env and fill in at minimum OPENAI_API_KEY
+# Open .env and fill in at minimum OPENROUTER_API_KEY
 ```
 
-Get an OpenAI API key at <https://platform.openai.com/>.
+Get an OpenRouter API key at <https://openrouter.ai/keys>.
 
 ### 4. Run
 
@@ -67,7 +67,7 @@ python main.py --pyqt
 ## Environment Variables
 
 See [`.env.example`](.env.example) for the full list with descriptions.  
-Only `OPENAI_API_KEY` is required to run; all other keys unlock optional features.
+Only `OPENROUTER_API_KEY` is required to run; all other keys unlock optional features.
 
 ---
 
@@ -90,7 +90,7 @@ EDITH/
 │   ├── smart_open.py     # URL & search shortcuts
 │   └── memory.py         # SQLite conversation memory
 ├── nlp/
-│   ├── openai_client.py  # Async OpenAI LLM wrapper
+│   ├── openrouter_client.py  # Async OpenRouter LLM wrapper
 │   ├── tts.py            # Text-to-speech
 │   └── stt.py            # Speech-to-text
 ├── search/

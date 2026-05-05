@@ -9,7 +9,7 @@ import webbrowser
 from core.smart_open import handle_search_shortcut, open_target
 from core.commands import CommandRouter
 from core.memory import MemoryStore
-from nlp.openai_client import OpenAIClient
+from nlp.openrouter_client import OpenRouterClient
 from nlp.tts import TTS
 from search.web import WebSearch
 
@@ -24,7 +24,7 @@ class Orchestrator:
 
     def __init__(self, config):
         self.config = config
-        self.llm = OpenAIClient(config)
+        self.llm = OpenRouterClient(config)
         self.memory = MemoryStore(config.DB_PATH)
         self.search = WebSearch(
             openweather_api_key=getattr(config, "OPENWEATHER_API_KEY", ""),
