@@ -5,7 +5,10 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 
-load_dotenv()
+# Load .env from the same directory as this file, so the app works
+# regardless of which working directory the user launches it from.
+_env_path = Path(__file__).parent / ".env"
+load_dotenv(dotenv_path=_env_path)
 
 
 @dataclass
@@ -43,6 +46,11 @@ class Config:
         Path(self.OUTLOOK_TOKEN_PATH).parent.mkdir(parents=True, exist_ok=True)
 
         if not self.GROQ_API_KEY:
-            raise ValueError("Missing GROQ_API_KEY in environment (.env).")
+            raise ValueError(
+                "Missing GROQ_API_KEY.\n"
+                "  1. Copy .env.example to .env  (in the EDITH folder)\n"
+                "  2. Open .env and set:  GROQ_API_KEY=your_key_here\n"
+                "  Get a free key at https://console.groq.com"
+            )
 
         return True
