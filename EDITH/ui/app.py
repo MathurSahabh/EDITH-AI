@@ -58,7 +58,7 @@ class ChatBubble(ctk.CTkFrame):
 
 
 class EdithUI(ctk.CTk):
-    def __init__(self):
+    def __init__(self, orchestrator=None):
         super().__init__()
         ctk.set_appearance_mode("dark")
         ctk.set_default_color_theme("blue")
@@ -68,15 +68,17 @@ class EdithUI(ctk.CTk):
         self.minsize(1080, 700)
         self.configure(fg_color="#0b1018")
 
-        cfg = SimpleNamespace(
-            DB_PATH="edith.db",
-            GROQ_API_KEY=os.getenv("GROQ_API_KEY", ""),
-            OPENWEATHER_API_KEY=os.getenv("OPENWEATHER_API_KEY", ""),
-            BING_API_KEY=os.getenv("BING_API_KEY", ""),
-            BING_ENDPOINT=os.getenv("BING_ENDPOINT", ""),
-            ENABLE_TTS=True,
-        )
-        self.orchestrator = Orchestrator(cfg)
+        if orchestrator is None:
+            cfg = SimpleNamespace(
+                DB_PATH="edith.db",
+                GROQ_API_KEY=os.getenv("GROQ_API_KEY", ""),
+                OPENWEATHER_API_KEY=os.getenv("OPENWEATHER_API_KEY", ""),
+                BING_API_KEY=os.getenv("BING_API_KEY", ""),
+                BING_ENDPOINT=os.getenv("BING_ENDPOINT", ""),
+                ENABLE_TTS=True,
+            )
+            orchestrator = Orchestrator(cfg)
+        self.orchestrator = orchestrator
 
         self.q = queue.Queue()
         self.worker_busy = False
@@ -494,6 +496,10 @@ class EdithUI(ctk.CTk):
 def run():
     app = EdithUI()
     app.mainloop()
+
+
+# Alias so `from ui.app import EdithApp` works (used by main.py)
+EdithApp = EdithUI
 
 
 if __name__ == "__main__":

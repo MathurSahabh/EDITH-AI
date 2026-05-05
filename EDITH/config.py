@@ -14,7 +14,7 @@ load_dotenv(dotenv_path=_env_path)
 @dataclass
 class Config:
     # LLM
-    GROQ_API_KEY: str = os.getenv("GROQ_API_KEY", "")
+    GROQ_API_KEY: str = os.getenv("GROQ_API_KEY", "").strip()
     GROQ_MODEL: str = os.getenv("GROQ_MODEL", "llama-3.1-8b-instant")
 
     # Web
