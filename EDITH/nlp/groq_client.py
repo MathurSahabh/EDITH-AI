@@ -28,7 +28,4 @@ class GroqClient:
             )
             return (res.choices[0].message.content or "").strip()
 
-        try:
-            return await asyncio.wait_for(_call(), timeout=self.timeout_sec)
-        except Exception as e:
-            return f"LLM error: {e}"
+        return await asyncio.wait_for(_call(), timeout=self.timeout_sec)
