@@ -90,7 +90,7 @@ EDITH/
 │   ├── smart_open.py     # URL & search shortcuts
 │   └── memory.py         # SQLite conversation memory
 ├── nlp/
-│   ├── openai_client.py  # Async OpenRouter LLM wrapper
+│   ├── openrouter_client.py  # Async OpenRouter LLM wrapper
 │   ├── tts.py            # Text-to-speech
 │   └── stt.py            # Speech-to-text
 ├── search/

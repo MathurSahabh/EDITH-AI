@@ -9,7 +9,7 @@ import webbrowser
 from core.smart_open import handle_search_shortcut, open_target
 from core.commands import CommandRouter
 from core.memory import MemoryStore
-from nlp.openai_client import OpenRouterClient
+from nlp.openrouter_client import OpenRouterClient
 from nlp.tts import TTS
 from search.web import WebSearch
 

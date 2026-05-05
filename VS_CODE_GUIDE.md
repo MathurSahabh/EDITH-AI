@@ -242,7 +242,7 @@ EDITH-AI/
     │   ├── converter.py         ← ⭐ NEW: Unit converter
     │   └── password_gen.py      ← ⭐ NEW: Password generator
     ├── nlp/
-    │   ├── openai_client.py     ← OpenRouter LLM wrapper
+    │   ├── openrouter_client.py ← OpenRouter LLM wrapper
     │   ├── stt.py               ← Speech-to-text
     │   └── tts.py               ← Text-to-speech
     ├── search/
