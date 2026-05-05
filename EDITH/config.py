@@ -11,8 +11,8 @@ load_dotenv()
 @dataclass
 class Config:
     # LLM
-    GROQ_API_KEY: str = os.getenv("GROQ_API_KEY", "")
-    GROQ_MODEL: str = os.getenv("GROQ_MODEL", "llama-3.1-8b-instant")
+    OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")
+    OPENAI_MODEL: str = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
 
     # Web
     BING_API_KEY: str = os.getenv("BING_API_KEY", "")
@@ -42,7 +42,7 @@ class Config:
         Path(self.GMAIL_TOKEN_PATH).parent.mkdir(parents=True, exist_ok=True)
         Path(self.OUTLOOK_TOKEN_PATH).parent.mkdir(parents=True, exist_ok=True)
 
-        if not self.GROQ_API_KEY:
-            raise ValueError("Missing GROQ_API_KEY in environment (.env).")
+        if not self.OPENAI_API_KEY:
+            raise ValueError("Missing OPENAI_API_KEY in environment (.env).")
 
         return True

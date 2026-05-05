@@ -31,13 +31,13 @@ class CommandRouter:
     Unified CommandRouter (v6.4 final)
     """
 
-    def __init__(self, groq_client, openweather_api_key: str = "", config=None):
-        self.groq = groq_client
+    def __init__(self, llm_client, openweather_api_key: str = "", config=None):
+        self.llm = llm_client
         self.openweather_api_key = openweather_api_key
         self.config = config
         self.desktop = DesktopActions()
         self._skills = None
-        self._dev = DeveloperSkills(groq_client=groq_client, config=config)
+        self._dev = DeveloperSkills(llm_client=llm_client, config=config)
         self._sys_ctrl = SystemControl(config=config)
         self._reminders = ReminderManager()
         self._clipboard = ClipboardManager()
@@ -73,7 +73,7 @@ class CommandRouter:
     def _ensure_skills(self, memory, search):
         if self._skills is None:
             self._skills = AgentSkills(
-                groq_client=self.groq,
+                llm_client=self.llm,
                 memory=memory,
                 search=search,
                 config=self.config
