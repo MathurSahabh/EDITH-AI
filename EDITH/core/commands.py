@@ -19,6 +19,11 @@ from core.desktop_actions import DesktopActions
 from core.skills import AgentSkills
 from core.developer_skills import DeveloperSkills
 from core.system_control import SystemControl
+from core.reminders import ReminderManager
+from core.clipboard_manager import ClipboardManager
+from core.translator import Translator
+from core.converter import UnitConverter
+from core.password_gen import PasswordGenerator
 
 
 class CommandRouter:
@@ -34,6 +39,11 @@ class CommandRouter:
         self._skills = None
         self._dev = DeveloperSkills(groq_client=groq_client, config=config)
         self._sys_ctrl = SystemControl(config=config)
+        self._reminders = ReminderManager()
+        self._clipboard = ClipboardManager()
+        self._translator = Translator()
+        self._converter = UnitConverter()
+        self._password_gen = PasswordGenerator()
 
         self.city_tz = {
             "london": "Europe/London",
@@ -650,6 +660,41 @@ class CommandRouter:
         if sys_res is not None:
             return sys_res
 
+        # ------------------------------------------------------------------
+        # Reminder System
+        # ------------------------------------------------------------------
+        reminder_res = self._reminders.handle(raw)
+        if reminder_res is not None:
+            return reminder_res
+
+        # ------------------------------------------------------------------
+        # Clipboard Manager
+        # ------------------------------------------------------------------
+        clipboard_res = self._clipboard.handle(raw)
+        if clipboard_res is not None:
+            return clipboard_res
+
+        # ------------------------------------------------------------------
+        # Language Translator
+        # ------------------------------------------------------------------
+        translate_res = self._translator.handle(raw)
+        if translate_res is not None:
+            return translate_res
+
+        # ------------------------------------------------------------------
+        # Unit Converter
+        # ------------------------------------------------------------------
+        convert_res = self._converter.handle(raw)
+        if convert_res is not None:
+            return convert_res
+
+        # ------------------------------------------------------------------
+        # Password Generator
+        # ------------------------------------------------------------------
+        password_res = self._password_gen.handle(raw)
+        if password_res is not None:
+            return password_res
+
         return None
 
     async def execute_pending(self, pending_action, search):
@@ -914,5 +959,28 @@ class CommandRouter:
             "- task manager  /  list processes\n"
             "- kill process <name>  /  close app <name>  (with confirmation)\n"
             "- auto update  /  update pc\n"
+            "\n--- Reminders ---\n"
+            "- remind me to <task> in <N> minutes/hours/seconds\n"
+            "- list reminders\n"
+            "- clear reminders\n"
+            "\n--- Clipboard Manager ---\n"
+            "- copy <text>\n"
+            "- show clipboard\n"
+            "- clipboard history\n"
+            "- clear clipboard\n"
+            "\n--- Translator ---\n"
+            "- translate <text> to <language>\n"
+            "- translate <text> from <lang> to <lang>\n"
+            "\n--- Unit Converter ---\n"
+            "- convert <value> <unit> to <unit>\n"
+            "- convert 100 km to miles\n"
+            "- convert 50 celsius to fahrenheit\n"
+            "- convert 10 kg to pounds\n"
+            "\n--- Password Generator ---\n"
+            "- generate password\n"
+            "- generate password <N> characters\n"
+            "- generate password no symbols\n"
+            "- generate pin  /  generate pin <N>\n"
+            "- generate passphrase  /  generate passphrase <N>\n"
         )
     
