@@ -8,7 +8,7 @@ class GroqClient:
     def __init__(self, config):
         self.config = config
         self.client = AsyncGroq(api_key=config.GROQ_API_KEY)
-        self.model = getattr(config, "GROQ_MODEL", "llama-3.1-8b-instant")
+        self.model = getattr(config, "GROQ_MODEL", "llama-3.3-70b-versatile")
         self.timeout_sec = getattr(config, "REQUEST_TIMEOUT_SEC", 30)
 
     async def chat(self, prompt: str, system: Optional[str] = None) -> str:

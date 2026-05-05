@@ -505,7 +505,10 @@ class Orchestrator:
 
         
         style = self._profile_style_prefix()
-        reply = await self.groq.chat(f"{style}\n\nUser: {text}")
+        try:
+            reply = await self.groq.chat(f"{style}\n\nUser: {text}")
+        except Exception:
+            reply = "I'm having trouble reaching the AI service right now. Please check your API key and model settings, then try again."
         return self._done(reply)
 
     def _done(self, assistant_text: str) -> str:

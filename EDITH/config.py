@@ -15,7 +15,7 @@ load_dotenv(dotenv_path=_env_path)
 class Config:
     # LLM
     GROQ_API_KEY: str = os.getenv("GROQ_API_KEY", "").strip()
-    GROQ_MODEL: str = os.getenv("GROQ_MODEL", "llama-3.1-8b-instant")
+    GROQ_MODEL: str = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
 
     # Web
     BING_API_KEY: str = os.getenv("BING_API_KEY", "")
