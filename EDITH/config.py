@@ -11,7 +11,7 @@ load_dotenv()
 @dataclass
 class Config:
     # LLM
-    GROQ_API_KEY: str = os.getenv("GROQ_API_KEY", "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")
+    GROQ_API_KEY: str = os.getenv("GROQ_API_KEY", "")
     GROQ_MODEL: str = os.getenv("GROQ_MODEL", "llama-3.1-8b-instant")
 
     # Web

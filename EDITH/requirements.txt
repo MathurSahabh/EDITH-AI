@@ -17,6 +17,7 @@ PyAudio>=0.2.14
 
 # GUI
 PyQt6>=6.7.1
+customtkinter>=5.2.2
 
 # Google Gmail integration
 google-auth>=2.35.0
@@ -26,3 +27,6 @@ google-auth-httplib2>=0.2.0
 
 # Optional Outlook auth helper (currently using raw requests device code flow)
 msal>=1.31.0
+
+# Clipboard Manager (Feature 2)
+pyperclip>=1.8.2

@@ -27,13 +27,13 @@ class Orchestrator:
         self.groq = GroqClient(config)
         self.memory = MemoryStore(config.DB_PATH)
         self.search = WebSearch(
-            openweather_api_key=getattr(config, "OPENWEATHER_API_KEY", "05dae85c1eeba9c43924fce31778ce9b"),
+            openweather_api_key=getattr(config, "OPENWEATHER_API_KEY", ""),
             bing_api_key=getattr(config, "BING_API_KEY", ""),
             bing_endpoint=getattr(config, "BING_ENDPOINT", ""),
         )
         self.commands = CommandRouter(
             groq_client=self.groq,
-            openweather_api_key=getattr(config, "OPENWEATHER_API_KEY", "05dae85c1eeba9c43924fce31778ce9b"),
+            openweather_api_key=getattr(config, "OPENWEATHER_API_KEY", ""),
             config=config
         )
         self.tts = TTS(enabled=getattr(config, "ENABLE_TTS", True))
