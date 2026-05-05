@@ -59,7 +59,7 @@ _WORDS = [
     "sweet", "swift", "swing", "sword", "table", "taste", "teach", "terms",
     "think", "three", "throw", "tiger", "tidal", "title", "toast", "topic",
     "torch", "total", "touch", "tower", "track", "trade", "trail", "train",
-    "trait", "trave", "treat", "trend", "trial", "trick", "troop", "trust",
+    "trait", "brave", "treat", "trend", "trial", "trick", "troop", "trust",
     "truth", "tumor", "ultra", "under", "unify", "union", "unity", "until",
     "upper", "upset", "urban", "usage", "using", "usual", "valid", "value",
     "vapor", "vault", "venus", "venom", "verse", "video", "vista", "voice",
