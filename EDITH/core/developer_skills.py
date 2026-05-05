@@ -30,8 +30,8 @@ from typing import Optional
 class DeveloperSkills:
     """Handles all Developer & Coding commands."""
 
-    def __init__(self, groq_client, config=None):
-        self.groq = groq_client
+    def __init__(self, llm_client, config=None):
+        self.llm = llm_client
         self.config = config
 
     # ------------------------------------------------------------------
@@ -138,7 +138,7 @@ class DeveloperSkills:
             f"Task: {task}"
         )
         try:
-            result = await self.groq.chat(prompt)
+            result = await self.llm.chat(prompt)
             return result or "I could not generate the code right now."
         except Exception as e:
             return f"Code generation failed: {e}"
@@ -284,7 +284,7 @@ class DeveloperSkills:
             f"```\n{code}\n```"
         )
         try:
-            result = await self.groq.chat(prompt)
+            result = await self.llm.chat(prompt)
             return result or "Could not analyse the code right now."
         except Exception as e:
             return f"Bug fix failed: {e}"
@@ -364,7 +364,7 @@ class DeveloperSkills:
             f"```\n{code}\n```"
         )
         try:
-            result = await self.groq.chat(prompt)
+            result = await self.llm.chat(prompt)
             return result or "Could not explain the code right now."
         except Exception as e:
             return f"Explain failed: {e}"

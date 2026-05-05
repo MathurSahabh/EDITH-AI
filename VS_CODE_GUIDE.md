@@ -84,7 +84,7 @@ Then open `.env` in VS Code and fill in:
 
 ```env
 # REQUIRED
-GROQ_API_KEY=gsk_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+OPENAI_API_KEY=sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 # OPTIONAL — for weather commands
 OPENWEATHER_API_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -93,10 +93,10 @@ OPENWEATHER_API_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 BING_API_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
 
-**How to get a FREE Groq API key:**
-1. Go to https://console.groq.com/
-2. Sign up for free
-3. Click **API Keys** → **Create API Key**
+**How to get an OpenAI API key:**
+1. Go to https://platform.openai.com/
+2. Sign up or log in
+3. Open **API keys** and create a new key
 4. Copy and paste into `.env`
 
 ---
@@ -242,7 +242,7 @@ EDITH-AI/
     │   ├── converter.py         ← ⭐ NEW: Unit converter
     │   └── password_gen.py      ← ⭐ NEW: Password generator
     ├── nlp/
-    │   ├── groq_client.py       ← Groq LLM wrapper
+    │   ├── openai_client.py     ← OpenAI LLM wrapper
     │   ├── stt.py               ← Speech-to-text
     │   └── tts.py               ← Text-to-speech
     ├── search/
@@ -265,7 +265,7 @@ EDITH-AI/
 | `ModuleNotFoundError: customtkinter` | `pip install customtkinter` |
 | `ModuleNotFoundError: pyperclip` | `pip install pyperclip` |
 | `PyAudio not found` | See Step 3 for platform-specific install |
-| `Missing GROQ_API_KEY` | Add key to `.env` file |
+| `Missing OPENAI_API_KEY` | Add key to `.env` file |
 | GUI window doesn't open | Try CLI mode: `python main.py --cli` |
 | Voice commands not working | Check microphone permissions and PyAudio install |
 | Weather not working | Add `OPENWEATHER_API_KEY` to `.env` |

@@ -9,7 +9,7 @@ import webbrowser
 from core.smart_open import handle_search_shortcut, open_target
 from core.commands import CommandRouter
 from core.memory import MemoryStore
-from nlp.groq_client import GroqClient
+from nlp.openai_client import OpenAIClient
 from nlp.tts import TTS
 from search.web import WebSearch
 
@@ -24,7 +24,7 @@ class Orchestrator:
 
     def __init__(self, config):
         self.config = config
-        self.groq = GroqClient(config)
+        self.llm = OpenAIClient(config)
         self.memory = MemoryStore(config.DB_PATH)
         self.search = WebSearch(
             openweather_api_key=getattr(config, "OPENWEATHER_API_KEY", ""),
@@ -32,7 +32,7 @@ class Orchestrator:
             bing_endpoint=getattr(config, "BING_ENDPOINT", ""),
         )
         self.commands = CommandRouter(
-            groq_client=self.groq,
+            llm_client=self.llm,
             openweather_api_key=getattr(config, "OPENWEATHER_API_KEY", ""),
             config=config
         )
@@ -79,7 +79,7 @@ class Orchestrator:
                 "- Do not format as an email; do not include salutations or signatures."
             )
             try:
-                ans = await self.groq.chat(prompt)
+                ans = await self.llm.chat(prompt)
                 return ans or "I could not generate the essay right now."
             except Exception:
                 return "I could not generate the essay right now (service error)."
@@ -96,7 +96,7 @@ class Orchestrator:
                 "- Do not write as an email."
             )
             try:
-                ans = await self.groq.chat(prompt)
+                ans = await self.llm.chat(prompt)
                 return ans or "I could not generate the essay right now."
             except Exception:
                 return "I could not generate the essay right now (service error)."
@@ -394,7 +394,7 @@ class Orchestrator:
         )
 
         try:
-            ans = (await self.groq.chat(prompt) or "").strip()
+            ans = (await self.llm.chat(prompt) or "").strip()
             if ans:
                 if freshness and freshness not in ans:
                     ans = f"{freshness}\n\n{ans}"
@@ -505,7 +505,7 @@ class Orchestrator:
 
         
         style = self._profile_style_prefix()
-        reply = await self.groq.chat(f"{style}\n\nUser: {text}")
+        reply = await self.llm.chat(f"{style}\n\nUser: {text}")
         return self._done(reply)
 
     def _done(self, assistant_text: str) -> str:

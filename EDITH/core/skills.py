@@ -28,8 +28,8 @@ class AgentSkills:
     - Task hooks
     """
 
-    def __init__(self, groq_client, memory, search, config):
-        self.groq = groq_client
+    def __init__(self, llm_client, memory, search, config):
+        self.llm = llm_client
         self.memory = memory
         self.search = search
         self.config = config
@@ -261,7 +261,7 @@ class AgentSkills:
         )
 
         try:
-            res = (await self.groq.chat(prompt) or "").strip()
+            res = (await self.llm.chat(prompt) or "").strip()
             if not res:
                 return "I couldn't draft the email right now."
 
@@ -548,7 +548,7 @@ class AgentSkills:
             f"{notes}"
         )
         try:
-            res = await self.groq.chat(prompt)
+            res = await self.llm.chat(prompt)
             return res.strip() if res else "I couldn't summarize the meeting notes right now."
         except Exception:
             return "I couldn't summarize the meeting notes right now."
